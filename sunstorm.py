@@ -74,7 +74,7 @@ def prep_restore(ipsw, blob, board, kpp, legacy, skip_baseband):
 
 
 
-    cp ramdisk/usr/lib/libimg4.dylib .
+    cp work/ramdisk/usr/lib/libimg4.dylib .
     libimg4_patcher libimg4.dylib libimg4.patched
     ldid -S libimg4.patched
 
