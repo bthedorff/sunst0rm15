@@ -66,39 +66,33 @@ def prep_restore(ipsw, blob, board, kpp, legacy, skip_baseband):
     subprocess.run(['/usr/bin/hdiutil', 'attach', 'work/ramdisk.dmg', '-mountpoint', 'work/ramdisk'])
     # patch asr into the ramdisk
     print('[*] Patching ASR in the RamDisk')
-    subprocess.run(['/usr/local/bin/asr64_patcher', 'work/ramdisk/usr/sbin/asr', 'work/patched_asr'])
+    subprocess.run(['/usr/local/bin/asr64_patcher_ios15', 'work/ramdisk/usr/sbin/asr', 'work/patched_asr'])
     # extract the ents and save it to work/asr_ents.plist like:     subprocess.run(['/usr/local/bin/ldid', '-e', 'work/ramdisk/usr/sbin/asr', '>', 'work/asr.plist'])
     print('[*] Extracting ASR Ents')
     with open('work/asr.plist', 'wb') as f:
         subprocess.run(['/usr/local/bin/ldid', '-e', 'work/ramdisk/usr/sbin/asr'], stdout=f)
-    # resign it using ldid
-    print('[*] Resigning ASR')
-    subprocess.run(['/usr/local/bin/ldid', '-Swork/asr.plist', 'work/patched_asr'])
-    # chmod 755 the new asr
+
+
+
+    cp ramdisk/usr/lib/libimg4.dylib .
+    libimg4_patcher libimg4.dylib libimg4.patched
+    ldid -S libimg4.patched
+
+    rm ramdisk/usr/sbin/asr && rm ramdisk/usr/lib/libimg4.dylib
+
+    chmod -R 755 libimg4.patched
+
+
+# chmod 755 the new asr
     print('[*] Chmoding ASR')
     subprocess.run(['/bin/chmod', '-R', '755', 'work/patched_asr'])
+
     # copy the patched asr back to the ramdisk
     print('[*] Copying Patched ASR back to the RamDisk')
-    subprocess.run(['/bin/cp', 'work/patched_asr', 'work/ramdisk/usr/sbin/asr'])
-    if not legacy:
-        # patch restored_external 
-        print('[*] Patching Restored External')
-        subprocess.run(['/usr/local/bin/restored_external64_patcher' ,'work/ramdisk/usr/local/bin/restored_external' ,'work/restored_external_patched'])
-        #resign it using ldid
-        print('[*] Extracting Restored External Ents')
-        with open('work/restored_external.plist', 'wb') as f:
-            subprocess.run(['/usr/local/bin/ldid', '-e', 'work/ramdisk/usr/local/bin/restored_external'], stdout=f)
-        # resign it using ldid
-        print('[*] Resigning Restored External')
-        subprocess.run(['/usr/local/bin/ldid', '-Swork/restored_external.plist', 'work/restored_external_patched'])
-        # chmod 755 the new restored_external
-        print('[*] Chmoding Restored External')
-        subprocess.run(['/bin/chmod', '-R', '755', 'work/restored_external_patched'])
-        # copy the patched restored_external back to the ramdisk
-        print('[*] Copying Patched Restored External back to the RamDisk')
-        subprocess.run(['/bin/cp', 'work/restored_external_patched', 'work/ramdisk/usr/local/bin/restored_external'])
-    else:
-        print('[*] Legacy mode, skipping restored_external')
+
+    cp -a libimg4.patched ramdisk/usr/lib/libimg4.dylib
+    cp -a patched_asr ramdisk/usr/sbin/asr
+
     # detach the ramdisk
     print('[*] Detaching RamDisk')
     subprocess.run(['/usr/bin/hdiutil', 'detach', 'work/ramdisk'])
