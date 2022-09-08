@@ -73,15 +73,24 @@ def prep_restore(ipsw, blob, board, kpp, legacy, skip_baseband):
         subprocess.run(['/usr/local/bin/ldid', '-e', 'work/ramdisk/usr/sbin/asr'], stdout=f)
 
 
+    subprocess.run(['/usr/local/bin/libimg4.dylib', 'work/ramdisk/usr/sbin/libimg4.dylib', 'work/libimg4.patched'])
+    #p work/ramdisk/usr/lib/libimg4.dylib .
+    #libimg4_patcher libimg4.dylib libimg4.patched
+    #ldid -S work/libimg4.patched
 
-    cp work/ramdisk/usr/lib/libimg4.dylib .
-    libimg4_patcher libimg4.dylib libimg4.patched
-    ldid -S libimg4.patched
 
-    rm ramdisk/usr/sbin/asr && rm ramdisk/usr/lib/libimg4.dylib
+    subprocess.run(['/usr/local/bin/ldid', '-e', 'work/ramdisk/usr/sbin/libimg4.dylib'], stdout=f)
 
-    chmod -R 755 libimg4.patched
 
+
+    #rm ramdisk/usr/sbin/asr && rm ramdisk/usr/lib/libimg4.dylib
+
+   #chmod -R 755 libimg4.patched
+
+
+    # chmod 755 the new asr
+    print('[*] Chmoding ASR')
+    subprocess.run(['/bin/chmod', '-R', '755', 'work/libimg4.patched'])
 
 # chmod 755 the new asr
     print('[*] Chmoding ASR')
@@ -90,8 +99,11 @@ def prep_restore(ipsw, blob, board, kpp, legacy, skip_baseband):
     # copy the patched asr back to the ramdisk
     print('[*] Copying Patched ASR back to the RamDisk')
 
-    cp -a libimg4.patched ramdisk/usr/lib/libimg4.dylib
-    cp -a patched_asr ramdisk/usr/sbin/asr
+    subprocess.run(['/bin/cp', 'work/libimg4.patched', 'work/ramdisk/usr/lib/libimg4.dylib'])
+    #cp -a libimg4.patched ramdisk/usr/lib/libimg4.dylib
+    #cp -a patched_asr ramdisk/usr/sbin/asr
+    subprocess.run(['/bin/cp', 'work/patched_asr', 'work/ramdisk/usr/sbin/asr'])
+
 
     # detach the ramdisk
     print('[*] Detaching RamDisk')
