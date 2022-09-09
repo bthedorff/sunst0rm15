@@ -1,3 +1,5 @@
+If you are reading this, DO NOT USE THIS FORK! It does not do what you hope and does not work.
+
 ![Logo](https://cdn.discordapp.com/attachments/1002450787085066250/1002533777693745182/sunst0rmgithub.png)
 
 # sunst0rm
