@@ -206,7 +206,7 @@ def prep_boot(ipsw, blob, board, kpp, identifier, legacy):
     subprocess.run(['/usr/local/bin/iBoot64Patcher', 'work/ibss.dmg', 'work/ibss.patched'])
     # patch ibec like this:  iBoot64Patcher ibec.dmg ibec.patched -b "-v"
     print('[*] Patching IBEC')
-    subprocess.run(['/usr/local/bin/iBoot64Patcher', 'work/ibec.dmg', 'work/ibec.patched', '-b', '-v'])
+    subprocess.run(['/usr/local/bin/iBoot64Patcher', 'work/ibec.dmg', 'work/ibec.patched', '-b', '-v keepsyms=1 debug=0xfffffffe panic-wait-forever=1'])
     # convert blob into im4m like this: img4tool -e -s blob -m IM4M
     print('[*] Converting BLOB to IM4M')
     subprocess.run(['/usr/local/bin/img4tool', '-e', '-s', blob, '-m', 'IM4M'])
@@ -242,7 +242,7 @@ def prep_boot(ipsw, blob, board, kpp, identifier, legacy):
         subprocess.run([sys.executable, '-m', 'pyimg4', 'im4p', 'extract', '-i', 'work/' + kernelcache, '-o', 'work/kcache.raw'])
     # patch it like this:   Kernel64Patcher kcache.raw krnlboot.patched -f
     print('[*] Patching Kernel')
-    subprocess.run(['/usr/local/bin/Kernel64Patcher', 'work/kcache.raw', 'work/krnlboot.patched', '-f'])
+    subprocess.run(['/usr/local/bin/Kernel64Patcher', 'work/kcache.raw', 'work/krnlboot.patched', '-fo'])
     # convert it like this:   pyimg4 im4p create -i krnlboot.patched -o krnlboot.im4p --extra kpp.bin -f rkrn --lzss
     print('[*] Converting Kernel')
     if kpp:
