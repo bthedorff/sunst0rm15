@@ -1,5 +1,7 @@
 If you are reading this, DO NOT USE THIS FORK! It does not do what you hope and does not work.
 
+Reference https://github.com/shouri10/iostethereddowngrade15
+
 ![Logo](https://cdn.discordapp.com/attachments/1002450787085066250/1002533777693745182/sunst0rmgithub.png)
 
 # sunst0rm
@@ -31,6 +33,7 @@ Based on [my guide](https://github.com/mineek/iostethereddowngrade)
 - [Kernel64patcher (fork)](https://github.com/iSuns9/Kernel64Patcher)
 - [img4tool](https://github.com/tihmstar/img4tool)
 - [img4](https://github.com/xerub/img4lib)
+- [libimg4_patcher](https://github.com/iSuns9/libimg4_patcher)
 - [ldid](https://github.com/ProcursusTeam/ldid)
 - [restored_external64_patcher](https://github.com/iSuns9/restored_external64patcher)
 - [asr64_patcher](https://github.com/exploit3dguy/asr64_patcher)
