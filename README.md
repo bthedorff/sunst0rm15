@@ -1,6 +1,6 @@
 If you are reading this, THIS MAY OR MAY NOT WORK. This has only been tested on iPhone 8 with 15.1
 
-THE SAME ISSUES WITH IOS 14 (HOME BUTTON, ETC) APPLE TO 15 AS WELL
+THE SAME ISSUES WITH IOS 14 (HOME BUTTON, ETC) APPLY TO 15 AS WELL
 
 Reference https://github.com/shouri10/iostethereddowngrade15
 
